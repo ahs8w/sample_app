@@ -1,8 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Ruby on Rails Tutorial Sample App | <%= yield(:title) %></title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <title><%= full_title(yield(:page_title)) %></title>
+  <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
+  <!-- stylesheet_link_tag("path", { hash w/ media type and saying to use turbolinks}) -->
+  <!-- functions: () are optional;      hashes: if last argument, {} are also optional -->
+  <!-- stylesheet_link_tag("application", { media: "all", "data-t...-t..." => true })  -->
+  <!--   ruby doesn't care about newlines so you can break up your code how you want   -->
+
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>   <!-- prevents cross-site request forgery -->
 </head>
