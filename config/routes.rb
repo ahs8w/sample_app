@@ -1,8 +1,19 @@
 SampleApp::Application.routes.draw do
-  get "static_pages/home"
-  get "static_pages/help"
-  get "static_pages/about"
-  get "static_pages/contact"
+  get "users/new"
+  root  'static_pages#home'
+  #   root_path  -> '/'
+  #   root_URL   -> 'http://localhost:3000/'
+  match '/help',    to: 'static_pages#help',    via: 'get' 
+  match '/about',   to: 'static_pages#about',   via: 'get'
+  match '/contact', to: 'static_pages#contact', via: 'get'
+  match '/signup',  to: 'users#new',            via: 'get'
+  # matches GET request for /contact and routes it to contact action in StaticPages controller
+  # automatically creates named routes for use in controllers and views:
+  #   contact_path  -> '/contact'
+  #   contact_URL   -> 'http://localhost:3000/about'   --  use for redirects (HTTP standard: full URL)
+
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

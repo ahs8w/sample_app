@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title><%= full_title(yield(:page_title)) %></title>
-  <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
-  <!-- stylesheet_link_tag("path", { hash w/ media type and saying to use turbolinks}) -->
-  <!-- functions: () are optional;      hashes: if last argument, {} are also optional -->
-  <!-- stylesheet_link_tag("application", { media: "all", "data-t...-t..." => true })  -->
-  <!--   ruby doesn't care about newlines so you can break up your code how you want   -->
+  <head>
+    <title><%= full_title(yield(:page_title)) %></title>
+    <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
+    <!-- stylesheet_link_tag("path", { hash w/ media type and saying to use turbolinks}) -->
+    <!-- functions: () are optional;      hashes: if last argument, {} are also optional -->
+    <!-- stylesheet_link_tag("application", { media: "all", "data-t...-t..." => true })  -->
+    <!--   ruby doesn't care about newlines so you can break up your code how you want   -->
 
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%= csrf_meta_tags %>   <!-- prevents cross-site request forgery -->
-</head>
-<body>
-
-<%= yield %>
-
-</body>
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+    <%= csrf_meta_tags %>   <!-- prevents cross-site request forgery -->
+    <%= render 'layouts/shim' %>
+    <!-- HTML5 shim for older IE browsers who don't understand HTML5 doctypes -->
+  </head>
+  <body>
+    <%= render 'layouts/header' %>    <!-- 'render' the partial '_header.html.erb' in app/views/layouts/ -->
+    <div class="container">
+      <%= yield %>
+      <%= render 'layouts/footer' %>
+    </div>
+  </body>
 </html>
