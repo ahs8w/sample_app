@@ -1,5 +1,5 @@
 SampleApp::Application.routes.draw do
-  get "users/new"
+  resources :users                  # adds all of the RESTful routes for User resource
   root  'static_pages#home'
   #   root_path  -> '/'
   #   root_URL   -> 'http://localhost:3000/'
