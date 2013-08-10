@@ -1,6 +1,10 @@
 class User < ActiveRecord::Base
-  before_save { email.downcase! }             # callback: mitigates risk of case-sensitivity in databases
-  # same as ->  before_save { self.email = email.downcase }
+  before_save { email.downcase! }             
+      # callback method: reformats email before saving user -> mitigates risk of case-sensitivity in databases
+      # same as ->  before_save { self.email = email.downcase }
+  before_create :create_remember_token 
+      # method reference: Rails looks for a method called 'create_remember_token' and runs before saving the user
+      # passing a method reference to a callback is preferred to passing an explicit block (like w/ before_save ...)
 
   validates :name,  presence: true, length: { maximum: 50 }
     # same as validates(:name, presence: true)  ->  method
@@ -18,6 +22,21 @@ class User < ActiveRecord::Base
                         # auto validates password/confirmation: presence, matching
                         # adds an authenticate method to compare encrypted password to password_digest
                         # console >> user.authenticate("correct_password") => returns user object
+
+  def User.new_remember_token
+    SecureRandom.urlsafe_base64
+  end
+
+  def User.encrypt(token)
+    Digest::SHA1.hexdigest(token.to_s) # call .to_s is to handle nil tokens.  primarily for testing.
+  end
+
+  private  # methods defined in 'private' are hidden.  Can't even be used in console => NoMethodError
+    
+    def create_remember_token
+      self.remember_token = User.encrypt(User.new_remember_token)
+        # assignment w/out 'self' would create a local variable.  'self' insures it sets the user's 'remember_token'
+    end
 end                                     
 
 

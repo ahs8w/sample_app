@@ -14,10 +14,11 @@ describe User do
         #   expect(@user).to respond_to(:name)
         # end
 
-  it { should respond_to(:email) }
+  it { should respond_to(:email) }                # 'it' method applies subsequent test to subject(@user)
   it { should respond_to(:password_digest) }   
   it { should respond_to(:password) }
   it { should respond_to(:password_confirmation) }
+  it { should respond_to(:remember_token) }
   it { should respond_to(:authenticate) }
 
   it { should be_valid }                       # mostly just a sanity check
@@ -112,5 +113,11 @@ describe User do
       it { should_not eq user_for_invalid_password }
       specify { expect(user_for_invalid_password).to be_false }   # specify: same as 'it', used for linguistic sense
     end
+  end
+
+  describe "remember token" do
+    before { @user.save }
+    its(:remember_token) { should_not be_blank }   # 'its': similar to 'it' but tests a given attribute of subject
+        # equivalent to:   it { expect(@user.remember_token).not_to be_blank }
   end
 end
