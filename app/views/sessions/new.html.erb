@@ -4,7 +4,7 @@
 <div class="row">
   <div class="span6 offset3">
     <%= form_for(:session, url: sessions_path) do |f| %>  
-    <!-- there is no session model and no @session for Rails to infer the action of the form
+         <!-- there is no session model and no @session for Rails to infer the action of the form
          so it is necessary to indicate the ':resource,' as well as 'url: resource_path' -->
 
       <%= f.label :email %>
@@ -15,7 +15,26 @@
 
       <%= f.submit "Sign In", class: "btn btn-large btn-primary" %>
     <% end %>
-
     <p>New user? <%= link_to "Sign up now!", signup_path %></p>
   </div>
 </div>
+
+
+
+
+<!--  REFACTORED ATTEMPT form_for to form_tag
+
+<%= form_tag sessions_path do %>
+  <div class="field">
+    <%= label_tag :email %>
+    <%= text_field_tag :email, params[:email] %>
+  </div>
+  <div class="field">
+    <%= label_tag :password %>
+    <%= password_field_tag :password %>
+  </div>
+  <div class="btn btn-large btn-primary"><%= submit_tag "Sign In" %></div>
+<% end %>
+form_for links to a specific model; form_tag is for forms which don't link directly to a resource via a model
+
+-->
