@@ -4,6 +4,9 @@ source 'https://rubygems.org'
 gem 'rails', '4.0.0'
 gem 'bootstrap-sass', '2.3.2.0'   # converts LESS bootstrap to SASS formatting
 gem 'bcrypt-ruby', '3.0.1'        # hash function to irreversibly encrypt passwords
+gem 'faker', '1.1.2'              # make semi-realistic sample users to populate the development site
+gem 'will_paginate', '3.0.4'      # paginating users_path
+gem 'bootstrap-will_paginate', '0.0.9'
 
 
 # Use sqlite3 as the database for Active Record

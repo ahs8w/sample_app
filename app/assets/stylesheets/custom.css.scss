@@ -174,3 +174,18 @@ input {
   margin-top: 45px;
   @include box_sizing;      /* uses SASS mixin to include box-sizing rules as stated above */
 }
+
+/* Users index */
+
+.users {
+  list-style: none;
+  margin: 0;
+  li {
+    overflow: auto;
+    padding: 10px 0;
+    border-top: 1px solid $grayLighter;
+    &:last-child {
+      border-bottom: 1px solid $grayLighter;
+    }
+  }
+}
