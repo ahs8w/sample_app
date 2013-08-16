@@ -17,10 +17,45 @@ describe "StaticPages" do
     let(:heading)    { 'Sample App' }         # replaces: it { should have_content('Sample App') }
     let(:page_title) { '' }                   # replaces: it { should have_title(full_title('')) }
     it_should_behave_like "all static pages" 
-    it { should_not have_title('| Home') }    # replaces:
-  end                                         # it "should not have a custom page title" do
-                                              # expect(page).not_to have_title('| Home')
-  describe "Help page" do                     # end
+    it { should_not have_title('| Home') }    
+
+    describe "for signed-in users" do
+      let(:user) { FactoryGirl.create(:user) }
+      before do
+        FactoryGirl.create(:micropost, user: user, content: "Lorem ipsum")
+        FactoryGirl.create(:micropost, user: user, content: "Dolor sit amet")
+        sign_in user
+        visit root_path
+      end
+
+      it "should render the user's feed" do
+        user.feed.each do |item|
+          expect(page).to have_selector("li##{item.id}", text: item.content)
+        end
+      end
+
+      describe "the sidebar" do
+
+        it "micropost counts should pluralize correctly" do
+          expect(page).to have_content("2 microposts")
+          first(:link, "delete").click
+          expect(page).to have_content("micropost")
+        end
+
+        describe "micropost pagination" do
+          before do
+            50.times { FactoryGirl.create(:micropost, user: user, content: "whatever") }
+            visit root_path
+          end
+          after(:all) { Micropost.delete_all }
+
+          it { should have_selector('div.pagination') }
+        end
+      end
+    end
+  end
+
+  describe "Help page" do
     before { visit help_path }
 
     page_info("Help")                         # helper method defined in utilities.rb

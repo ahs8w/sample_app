@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "AuthenticationPages : " do
+describe "Authentication  : " do
   
   subject { page }
 
@@ -12,7 +12,7 @@ describe "AuthenticationPages : " do
 
   end
 
-  describe "sign in" do
+  describe "Sign in : " do
     before { visit signin_path }
 
     describe "with invalid information" do
@@ -50,7 +50,9 @@ describe "AuthenticationPages : " do
     end
   end
 
-  describe "Authorization" do
+
+  describe "Authorization : " do
+
 
     describe "for non-signed-in users" do
       let(:user) { FactoryGirl.create(:user) }
@@ -91,6 +93,19 @@ describe "AuthenticationPages : " do
         describe "submitting to the update action" do
           before { patch user_path(user) }                # 'visit' a controller action using the HTTP request
           specify { expect(response).to redirect_to(signin_path) }  # HTTP request allows access to server 'response'
+        end
+      end
+
+      describe "in the Microposts controller" do
+
+        describe "submitting to the create action" do
+          before { post microposts_path }                                       # hits microposts#create
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+
+        describe "submitting to the destroy action" do      
+          before { delete micropost_path(FactoryGirl.create(:micropost)) }     # hits microposts#destroy
+          specify { expect(response).to redirect_to(signin_path) }
         end
       end
     end
@@ -135,22 +150,16 @@ describe "AuthenticationPages : " do
 
     describe "as a signed-in user" do         # signed in user should not be able to access users#new, users#create
       let(:user) { FactoryGirl.create(:user) }
+      before { sign_in user, no_capybara: true }
       
       describe "visiting the new user page" do
-        before do
-          sign_in user
-          visit root_url
-          click_link "Sign up now!"
-        end
+        before { get signup_path }
 
-        it { should_not have_title("Sign Up") }
+        specify { expect(response).to redirect_to(root_url) }
       end
 
       describe "submitting to the create action" do
-        before do
-          sign_in user, no_capybara: true
-          post users_path
-        end
+        before { post users_path }
 
         specify { expect(response).to redirect_to(root_url) }
       end

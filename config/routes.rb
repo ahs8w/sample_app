@@ -1,6 +1,8 @@
 SampleApp::Application.routes.draw do
   resources :users                  # adds all of the RESTful routes for User resource
   resources :sessions, only: [:new, :create, :destroy]
+  resources :microposts, only: [:create, :destroy]
+  
   root  'static_pages#home'
   #   root_path  -> '/'
   #   root_URL   -> 'http://localhost:3000/'

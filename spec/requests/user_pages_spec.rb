@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe "User pages" do
+describe "User pages  :  " do
 
   subject { page }
 
-  describe "index" do
+  describe "INDEX : " do
     let(:user) { FactoryGirl.create(:user) }
     before(:each) do
       sign_in user
@@ -51,22 +51,31 @@ describe "User pages" do
     end
   end
 
-  describe "profile page" do
+  describe "PROFILE page : " do
     let(:user) { FactoryGirl.create(:user) }
+    let!(:m1) { FactoryGirl.create(:micropost, user: user, content: "Foo") }
+    let!(:m2) { FactoryGirl.create(:micropost, user: user, content: "Bar") }
+
     before { visit user_path(user) }
 
     it { should have_content(user.name) }
     it { should have_title(user.name) }
+
+    describe "microposts" do
+      it { should have_content(m1.content) }
+      it { should have_content(m2.content) }
+      it { should have_content(user.microposts.count) }
+    end
   end
 
-  describe "signup page" do
+  describe "SIGNUP page : " do
     before { visit signup_path }
 
     it { should have_content('Sign Up') }
     it { should have_title(full_title('Sign Up')) }
   end
 
-  describe "signup" do
+  describe "SIGNUP : " do
     before { visit signup_path }
 
     let(:submit) { "Create my account" }
@@ -107,7 +116,7 @@ describe "User pages" do
     end
   end
 
-  describe "edit" do
+  describe "EDIT : " do
     let(:user) { FactoryGirl.create(:user) }
     before do
       sign_in user

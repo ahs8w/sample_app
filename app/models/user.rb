@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  has_many :microposts, dependent: :destroy
   before_save { email.downcase! }             
       # callback method: reformats email before saving user -> mitigates risk of case-sensitivity in databases
       # same as ->  before_save { self.email = email.downcase }
@@ -29,6 +30,12 @@ class User < ActiveRecord::Base
 
   def User.encrypt(token)
     Digest::SHA1.hexdigest(token.to_s) # call .to_s is to handle nil tokens.  primarily for testing.
+  end
+
+  def feed
+    Micropost.where('user_id = ?', id) 
+    # '?' ensures that id is 'escaped' before being included in SQL query
+    # ALWAYS escape variables injected into SQL statements to avoid "SQL injection attacks"!!
   end
 
   private  # methods defined in 'private' are hidden.  Can't even be used in console => NoMethodError
