@@ -35,7 +35,7 @@ describe User do
   it { should_not be_admin }
 
 
-  describe "following" do
+  describe "relationships" do
     let(:other_user) { FactoryGirl.create(:user) }
     before do
       @user.save
@@ -48,6 +48,12 @@ describe User do
     describe "followed user" do
       subject { other_user }
       its(:followers) { should include(@user) }
+
+      describe "should not persist after user is deleted" do
+        before { @user.destroy }
+
+        its(:followers) { should_not include(@user) }
+      end
     end
 
     describe "and unfollowing" do
