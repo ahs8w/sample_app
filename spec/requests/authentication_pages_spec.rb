@@ -94,6 +94,16 @@ describe "Authentication  : " do
           before { patch user_path(user) }                # 'visit' a controller action using the HTTP request
           specify { expect(response).to redirect_to(signin_path) }  # HTTP request allows access to server 'response'
         end
+
+        describe "visiting the following page" do
+          before { visit following_user_path(user) }
+          it { should have_title('Sign In') }
+        end
+
+        describe "visiting the followers page" do
+          before { visit followers_user_path(user) }
+          it { should have_title('Sign In') }
+        end
       end
 
       describe "in the Microposts controller" do
@@ -105,6 +115,18 @@ describe "Authentication  : " do
 
         describe "submitting to the destroy action" do      
           before { delete micropost_path(FactoryGirl.create(:micropost)) }     # hits microposts#destroy
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+      end
+
+      describe "in the Relationships controller" do
+        describe "submitting to the create action" do
+          before { post relationships_path }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+
+        describe "submitting to the destroy action" do
+          before { delete relationship_path(1) }   # (1): avoids creating a virtual relationship; should redirect before
           specify { expect(response).to redirect_to(signin_path) }
         end
       end

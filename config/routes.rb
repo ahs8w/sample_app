@@ -1,7 +1,12 @@
 SampleApp::Application.routes.draw do
-  resources :users                  # adds all of the RESTful routes for User resource
-  resources :sessions, only: [:new, :create, :destroy]
-  resources :microposts, only: [:create, :destroy]
+  resources :users do                   # adds all of the RESTful routes for User resource
+    member do                           # 'member' method: routes respond to URLs containing user id
+      get :following, :followers          # /users/1/following  -> following_user_path(1)
+    end                                 # 'collection' method: works w/out the user id
+  end                                     # /users/tigers
+  resources :sessions,      only: [:new, :create, :destroy]
+  resources :microposts,    only: [:create, :destroy]
+  resources :relationships, only: [:create, :destroy]
   
   root  'static_pages#home'
   #   root_path  -> '/'

@@ -1,0 +1,5 @@
+$("#follow_form").html("<%= escape_javascript(render('users/unfollow')) %>")
+// after following someone: changes follow_form to the unfollow partial
+// escape_javascript: necessary to escape out the result when inserting HTML in a JS file
+$("#followers").html("<%= @user.followers.count %>")
+// updates the follower count

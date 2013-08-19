@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :signed_in_user,    only: [:index, :edit, :update]
+  before_action :signed_in_user,    only: [:index, :edit, :update, :following, :followers, :destroy]
   before_action :correct_user,      only: [:edit, :update]
   before_action :admin_user,        only: :destroy
   before_action :already_signed_in, only: [:new, :create]
@@ -53,6 +53,20 @@ class UsersController < ApplicationController
     else
       redirect_to root_url
     end
+  end
+
+  def following
+    @title = "Following"        # set title variable b/c we're using a shared view for 'following' and 'followers'
+    @user = User.find(params[:id])
+    @users = @user.followed_users.paginate(page: params[:page])
+    render 'show_follow'        # explicit call to 'render' because using a shared view for 'following' and 'followers'
+  end
+
+  def followers
+    @title = "Followers"
+    @user = User.find(params[:id])
+    @users = @user.followers.paginate(page: params[:page])
+    render 'show_follow'
   end
 
   private
